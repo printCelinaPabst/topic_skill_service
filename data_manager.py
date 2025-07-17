@@ -20,7 +20,7 @@ class JsonDataManager:
             print(f"Ein unerwarteter Fehler ist aufgetreten beim Lesen von {filepath}: {e}")
             return []
 
-            pass
+            #pass
 
         def write_data(self, filepath, data):
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -33,4 +33,4 @@ class JsonDataManager:
                 return False
 
 
-            pass
+            #pass 
