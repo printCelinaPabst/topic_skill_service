@@ -1,13 +1,11 @@
 #Import von Standardbibliotheken
-
-import json # Zum Einlesen und Verarbeiten von JSON-Dateien
-import os #Für Pfadoperationen, um Dateipfade betriebssystemunabhängig zu behandeln
-
-# Import aus dem Flask-Framework
+import os                        #Für Pfadoperationen, um Dateipfade betriebssystemunabhängig zu behandeln
 from flask import Flask, jsonify # Flask: Basisobjekt der Webanwendung / jsonify: wandelt Python-Daten in JSON um,damit der Client sie versteht
+from data_manager import JsonDataManager
 
 
 app = Flask(__name__) #Flaskanwendung (Flaskapp) erstellt __name__ sorgt dafür,das Flask weiß wo der Einstiegspunkt ist-wichtig für Routing und Debugging
+data_manager = JsonDataManager()
 
 # Pfade zu den Daten werden sicher und dynamisch generiert
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') #__file__ zeigt auf die aktuelle Datei
@@ -17,26 +15,14 @@ TOPICS_FILE = os.path.join(DATA_DIR, 'topics.json') #baut korrekte Pfade zusamme
 def hello_world():
     return "Hello from Topic and Skill Services!"
 
-#Eine Funktion zum sicheren Einlesen ein JSON-Datei
-def read_json_file(filepath):
-    if not os.path.exists(filepath): # gibt eine leere Liste zurück, wenn die Datei nicht existiert
-        return []
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return json.load(file) #nutzt json.load() um den Inhalt zu parsen.
-        
-    except json.JSONDecodeError: # für kaputte JSON-Syntax
-        print(f"Fehler beim Dekodieren der JSON-Datei: {filepath}. Bitte JSON-Syntax überprüfen!")
-        return [] 
-    except Exception as e: #für allgemeine Probleme beim Lesen
-        print(f"Ein unerwarteter Fehler ist aufgetreten beim Lesen von {filepath}: {e}")
-        return []
-    
+
 #API-Endpunkt /topics      
 @app.route('/topics', methods=['GET'])
 #           Ressource    Methode
+
+
 def get_topics():
-    topics = read_json_file(TOPICS_FILE) # ruft die JSON-Datei ab
+    topics = data_manager.read_data(TOPICS_FILE) # ruft die JSON-Datei ab
     return jsonify(topics) #wandelt sie mit jsonify in eine Web-taugliche Antwort um
                            #Client(Browser oder JavaScript-App) bekommt ein sauberes JSON zurück
 
