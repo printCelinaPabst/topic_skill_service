@@ -10,7 +10,7 @@ data_manager = JsonDataManager()
 # Pfade zu den Daten werden sicher und dynamisch generiert
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') #__file__ zeigt auf die aktuelle Datei
 TOPICS_FILE = os.path.join(DATA_DIR, 'topics.json') #baut korrekte Pfade zusammen Voteil:funktioniert auf Windows,Linux gleichermaßen
-
+SKILLS_FILE = os.path.join(DATA_DIR, 'skills.json')
 @app.route('/') # eine einfache Root-Route (Startseite) die zeigt, dass die App läuft.Praktisch für erste Tests und Health-Checks,
 def hello_world():
     return "Hello from Topic and Skill Services!"
@@ -19,6 +19,11 @@ def hello_world():
 #API-Endpunkt /topics      
 @app.route('/topics', methods=['GET'])
 #           Ressource    Methode
+
+@app.route('/skills', methods=['GET'])
+def get_skills():
+    skills = data_manager.read_data(SKILLS_FILE)
+    return jsonify(skills)
 
 
 def get_topics():
