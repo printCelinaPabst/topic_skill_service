@@ -11,39 +11,46 @@ data_manager = JsonDataManager()
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') #__file__ zeigt auf die aktuelle Datei
 TOPICS_FILE = os.path.join(DATA_DIR, 'topics.json') #baut korrekte Pfade zusammen Voteil:funktioniert auf Windows,Linux gleichermaßen
 SKILLS_FILE = os.path.join(DATA_DIR, 'skills.json')
+
+
 @app.route('/') # eine einfache Root-Route (Startseite) die zeigt, dass die App läuft.Praktisch für erste Tests und Health-Checks,
 def hello_world():
     return "Hello from Topic and Skill Services!"
 
+#API-Endpunkt /topics
 
-#API-Endpunkt /topics      
+#Endpunkt: Alle Topics abrufen (GET-Anfrage an die Ressource)     
 @app.route('/topics', methods=['GET'])
 #           Ressource    Methode
 
-@app.route('/skills', methods=['GET'])
-def get_skills():
-    skills = data_manager.read_data(SKILLS_FILE)
-    return jsonify(skills)
-
-# @app.route('/topics/<id>', methods=['GET'])
-# def get_topic_by_id(id):
-#     topics = data_manager.read_data(TOPICS_FILE)
-#     found_topics = [t for t in topics if t['id'] == id]
-#     topic = found_topics[0] if found_topics else None
-#      #topic = next((topic for topic in topics if topic.get('id').lower() == id).lower, None)
-#     return jsonify(topic)
-
+#Endpunkt: Einzelnes Topic nach ID abrufen (GET mit Pfadparameter)
 @app.route('/topics/<id>', methods=['GET'])
 def get_topic_by_id(id):
     topics = data_manager.read_data(TOPICS_FILE)
     topic = [t for t in topics if t['id'] == id]
     return jsonify(topic)
 
-
+#Hilfsfunktion: Gibt alle Topics als JSON zurück
 def get_topics():
     topics = data_manager.read_data(TOPICS_FILE) # ruft die JSON-Datei ab
-    return jsonify(topic) #wandelt sie mit jsonify in eine Web-taugliche Antwort um
+    return jsonify(topics) #wandelt sie mit jsonify in eine Web-taugliche Antwort um
                            #Client(Browser oder JavaScript-App) bekommt ein sauberes JSON zurück
+
+#----------------------------------------
+#API-Endpunkt /skills
+@app.route('/skills', methods=['GET'])
+
+#Endpunkt: Alle Skills abrufen (GET-Anfrage an die Ressource) 
+@app.route('/skills/<id>', methods=['GET'])
+def get_skill_by_id(id):
+    skills = data_manager.read_data(SKILLS_FILE)
+    skill = next((skill for skill in skills if skill.get('id').lower() == id.lower()),None)
+    return jsonify(skill)
+
+#Hilfsfunktion: Gibt alle Skills als JSON zurück
+def get_skills():
+    skills = data_manager.read_data(SKILLS_FILE)
+    return jsonify(skills)
 
 if __name__ == '__main__': # Start der Anwendung, wenn die Datei direkt ausgeführt wird
     app.run(debug=True, port=5000) #debug=True --> die Anwendung läuft im Debug-Modus, 
