@@ -28,7 +28,10 @@ def hello_world():
 def get_topic_by_id(id):
     topics = data_manager.read_data(TOPICS_FILE)
     topic = [t for t in topics if t['id'] == id]
-    return jsonify(topic)
+    if topic:
+        return jsonify(topic)
+    else:
+        return jsonify({"error":"Topic not found."})
 
 #Hilfsfunktion: Gibt alle Topics als JSON zurück
 def get_topics():
@@ -45,7 +48,11 @@ def get_topics():
 def get_skill_by_id(id):
     skills = data_manager.read_data(SKILLS_FILE)
     skill = next((skill for skill in skills if skill.get('id').lower() == id.lower()),None)
-    return jsonify(skill)
+    if skill:
+        return jsonify(skill)
+    else:
+        return jsonify({"error":"Skill not found."}), 404
+
 
 #Hilfsfunktion: Gibt alle Skills als JSON zurück
 def get_skills():
