@@ -25,10 +25,24 @@ def get_skills():
     skills = data_manager.read_data(SKILLS_FILE)
     return jsonify(skills)
 
+# @app.route('/topics/<id>', methods=['GET'])
+# def get_topic_by_id(id):
+#     topics = data_manager.read_data(TOPICS_FILE)
+#     found_topics = [t for t in topics if t['id'] == id]
+#     topic = found_topics[0] if found_topics else None
+#      #topic = next((topic for topic in topics if topic.get('id').lower() == id).lower, None)
+#     return jsonify(topic)
+
+@app.route('/topics/<id>', methods=['GET'])
+def get_topic_by_id(id):
+    topics = data_manager.read_data(TOPICS_FILE)
+    topic = [t for t in topics if t['id'] == id]
+    return jsonify(topic)
+
 
 def get_topics():
     topics = data_manager.read_data(TOPICS_FILE) # ruft die JSON-Datei ab
-    return jsonify(topics) #wandelt sie mit jsonify in eine Web-taugliche Antwort um
+    return jsonify(topic) #wandelt sie mit jsonify in eine Web-taugliche Antwort um
                            #Client(Browser oder JavaScript-App) bekommt ein sauberes JSON zurück
 
 if __name__ == '__main__': # Start der Anwendung, wenn die Datei direkt ausgeführt wird
