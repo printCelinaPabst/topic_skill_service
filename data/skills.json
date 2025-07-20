@@ -1,6 +1,35 @@
 [
-  { "id": "s1", "name": "HTML Basics", "topicId": "t1", "difficulty": "beginner" },
-  { "id": "s2", "name": "CSS Layouts (Flexbox/Grid)", "topicId": "t1", "difficulty": "intermediate" },
-  { "id": "s3", "name": "React Hooks", "topicId": "t2", "difficulty": "advanced", "prerequisites": ["s4"] },
-  { "id": "s4", "name": "JavaScript ES6+", "topicId": "t1", "difficulty": "intermediate" }
+    {
+        "id": "s1",
+        "name": "HTML Basics",
+        "topicId": "t1",
+        "difficulty": "beginner"
+    },
+    {
+        "id": "s2",
+        "name": "CSS Layouts (Flexbox/Grid)",
+        "topicId": "t1",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": "s3",
+        "name": "React Hooks",
+        "topicId": "t2",
+        "difficulty": "advanced",
+        "prerequisites": [
+            "s4"
+        ]
+    },
+    {
+        "id": "s4",
+        "name": "JavaScript ES6+",
+        "topicId": "t1",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": "991f9b7d-11a5-4296-871b-2bfa5604b3a5",
+        "name": "Grundlagen von Python",
+        "topicId": "t3",
+        "difficulty": "beginner"
+    }
 ]

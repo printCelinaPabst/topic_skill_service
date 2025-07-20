@@ -29,19 +29,19 @@ class JsonDataManager: #Basisklasse erstellt mit dem Namen JsonDataManager, erst
 
             #pass
 
-        def write_data(self, filepath, data):
-            # Erstellt das Verzeichnis, falls es nicht existiert
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
-            try:
-                # Öffnet die Datei im Schreibmodus mit UTF-8-Kodierung
-                with open(filepath, encoding="utf-8")as file:
-                    # Schreibt die Daten als formatiertes JSON in die Datei
-                    json.dump(data, file, indent=4)
-                    return True
-            except Exception as e:
-                # Allgemeine Fehlerbehandlung beim Schreiben der Datei
-                print(f"Ein unerwarteter Fehler ist aufgetreten beim Schreiben von {filepath}: {e}")
-                return False
+    def write_data(self, filepath, data):
+        # Erstellt das Verzeichnis, falls es nicht existiert
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        try:
+            # Öffnet die Datei im Schreibmodus mit UTF-8-Kodierung
+            with open(filepath, 'w', encoding="utf-8") as file:
+                # Schreibt die Daten als formatiertes JSON in die Datei
+                json.dump(data, file, indent=4)
+                return True
+        except Exception as e:
+            # Allgemeine Fehlerbehandlung beim Schreiben der Datei
+            print(f"Ein unerwarteter Fehler ist aufgetreten beim Schreiben von {filepath}: {e}")
+            return False
 
 
             #pass 
