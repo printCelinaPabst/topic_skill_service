@@ -1,7 +1,10 @@
 #Import von Standardbibliotheken
+
+import uuid # Importiere das UUID-Modul, um eindeutige IDs zu generieren
 import os                        #Für Pfadoperationen, um Dateipfade betriebssystemunabhängig zu behandeln
-from flask import Flask, jsonify # Flask: Basisobjekt der Webanwendung / jsonify: wandelt Python-Daten in JSON um,damit der Client sie versteht
+from flask import Flask, jsonify, request # Flask: Basisobjekt der Webanwendung / jsonify: wandelt Python-Daten in JSON um,damit der Client sie versteht / request ist notwendig um auf den Request-Body zuzugreifen
 from data_manager import JsonDataManager
+
 
 
 app = Flask(__name__) #Flaskanwendung (Flaskapp) erstellt __name__ sorgt dafür,das Flask weiß wo der Einstiegspunkt ist-wichtig für Routing und Debugging
@@ -58,6 +61,29 @@ def get_skill_by_id(id):
 def get_skills():
     skills = data_manager.read_data(SKILLS_FILE)
     return jsonify(skills)
+
+@app.route('/topics', methods=['POST'])
+def create_topic():
+    new_topic_data = request.json
+
+    if not new_topic_data or 'name' not in new_topic_data or 'description' not in new_topic_data:
+        return jsonify({"error": "'name' and 'description' for the topic are required in the request body."}), 400
+
+    new_topic_id = str(uuid.uuid4())
+
+    topic = {
+        "id": new_topic_id,
+        "name": new_topic_data['name'],
+        "description": new_topic_data['description']
+        }
+    
+    topics = data_manager.read_data(TOPICS_FILE)
+    topics.append(topic)
+
+    data_manager.write_data(TOPICS_FILE, topics)
+
+    return jsonify(topic), 201
+
 
 if __name__ == '__main__': # Start der Anwendung, wenn die Datei direkt ausgeführt wird
     app.run(debug=True, port=5000) #debug=True --> die Anwendung läuft im Debug-Modus, 
